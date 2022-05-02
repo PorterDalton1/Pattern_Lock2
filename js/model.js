@@ -1,3 +1,4 @@
+/*Used to create the class visitor and all the functions that interact with it*/
 class Visitor {
     constructor(id, firstName, lastName, address, city, state, zipCode, cellNum, email) {
         this.id = id;

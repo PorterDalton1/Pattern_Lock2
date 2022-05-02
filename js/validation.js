@@ -1,3 +1,5 @@
+/*Used to validate the form on the #logVisit section*/
+
 const stateAbbreviations = [
     'AL','AK','AS','AZ','AR','CA','CO','CT','DE','DC','FM','FL','GA',
     'GU','HI','ID','IL','IN','IA','KS','KY','LA','ME','MH','MD','MA',

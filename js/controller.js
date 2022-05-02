@@ -6,6 +6,7 @@ function hideAll() {
     $('section').hide();
 }
 
+//Takes an input eg: '#logVisit' and deletes all other functions and shows the page that was passed through
 function navigateTo(to) {
     
     if (currentPage === '#logVisit') {
@@ -49,6 +50,7 @@ function navigateTo(to) {
 hideAll();
 navigateTo(currentPage);
 
+//In the footer, navigates to the tab on the right of the current page
 function nextPage(){
     if (currentPage == '#home') {
         navigateTo('#rules');
@@ -77,6 +79,8 @@ function nextPage(){
         return 0;
     }
 }
+
+//In the footer, navigates to the tab on the left of the current page
 function lastPage(){
     if (currentPage == '#home') {
         navigateTo('#visitors');
@@ -272,6 +276,7 @@ function getUniqueId() {
     }   
 }
 
+//When form is submitted take the information and add a new visitor
 function submitForm() {
     //console.log($($('#vForm li')[1]).children('input').val());//.children('input').val());
     //called on form submit. Gets contents of form, creates visitor object,
