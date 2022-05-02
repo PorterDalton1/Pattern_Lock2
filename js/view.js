@@ -20,7 +20,7 @@ function renderTable(visitors) {//renders table from global 'visitors' object ar
                     '<td>' + val.fullName + '</td>' +
                     '<td>' + val.fullAddress + '</td>' +
                     /*cellNum = cellNum.slice(0,3) + '-' + cellNum.slice(3, 6) + '-' + cellNum.slice(6, 10);*/
-                    '<td>' + val.cellNum.slice(0,3) + '-' + val.cellNum.slice(3, 6) + '-' + val.slice(6, 10) + '</td>' +
+                    '<td>' + val.cellNum.slice(0,3) + '-' + val.cellNum.slice(3, 6) + '-' + val.cellNum.slice(6, 10) + '</td>' +
                     '<td>' + val.email + '</td>' +
                     '<td class="visitorId">' + val.id + '</td>' +
                     '<td>' + 
