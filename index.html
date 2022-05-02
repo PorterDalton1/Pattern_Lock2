@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="./css/main.css">
+        <link rel="stylesheet" href="./css/prism.css">
+        <!--Roboto Font-->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,400;1,700&display=swap" rel="stylesheet">
+        <!--Open Sans-->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&family=Roboto+Mono:ital,wght@0,400;1,700&display=swap" rel="stylesheet">
+    </head>
+    <title>Pattern Lock</title>
+    <body>
+        <header>
+            <h1>Cracking The Pattern Lock</h1>
+            <a><img src="./img/circle-arrow-down-solid.svg"></a>
+        </header>
+        <nav>
+            <div id="siteTitle">Cracking the Pattern Lock</div>
+            <div id="navBar">
+                <button onclick="navigateTo('#home')" id="homeButton">Home</button>
+                <button onclick="navigateTo('#rules')" id="rulesButton">Rules</button>
+                <button onclick="navigateTo('#code')" id="codeButton">Code</button>
+                <button onclick="navigateTo('#display')" id="displayButton">Let's Run It</button>
+                <button onclick="loadVisitors()" id="logButton">Visitors</button>
+            </div>
+        </nav>
+        <section id="home">
+            <h1>A Website Dedicated to Calculating and Displaying Pattern Lock Combinations</h1>
+            <h2>Everything About this Website</h2>
+            <div id="sections">
+                <div>
+                    <img src="./img/rulesIcon.svg">
+                    <h3>Rules</h3>
+                    <p>
+                        The steps needed to follow to make a valid lock combinations with the pattern.
+                    </p>
+                    <button onclick="navigateTo('#rules')">Go</button>
+                </div>
+                <div>
+                    <img src="./img/codeIcon.svg">
+                    <h3>The Code</h3>
+                    <p>
+                        The code I used to cycle through every possible combination lock.
+                    </p>
+                    <button onclick="navigateTo('#code')">Go</button>
+                </div>
+                <div>
+                    <img src="./img/playIcon.svg">
+                    <h3>Running It</h3>
+                    <p>
+                        Displays every single unique combination of the 3x3 pattern lock. 
+                    </p>
+                    <button onclick="navigateTo('#display')">Go</button>
+                </div>
+                <div>
+                    <img src="./img/infoIcon.svg">
+                    <h3>Tell me a little about yourself</h3>
+                    <p>Put your information in and tell me how you found this.</p>
+                    <button onclick="navigateTo('#visitors')">Go</button>
+                </div>
+            </div>
+        </section>
+        <section id="rules">
+            <h1>Rules</h1>
+            <div id="listOfRules">
+                <div>
+                    <h2>Rule 1: There Are 9 Unique Values</h2>
+                    <img src="./img/Rule_1.png">
+                </div>
+                
+                <div>
+                    <h2>Rule 2: You can't go go to the same spot twice</h2>
+                    <img src="./img/Rule_2.png">  
+                </div>
+                
+                <div>
+                    <h2>Rule 3: It is illegal to intersect an uninhabited spot</h2>
+                    <img src="./img/Rule_3b.png">
+                </div>
+                
+                <div>
+                    <h2>Rule 4: One can intersect a point ONLY if it has already been occupied</h2>
+                    <img src="./img/Rule_4b.png">
+                </div>
+                
+                <div>
+                    <h2>Rule 5: A correct combination needs to be between 4 values and 9 values</h2>
+                    <div>
+                        <img src="./img/Rule_5a.png">
+                        <img src="./img/Rule_5b.png">
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="code">
+            <h1>The Code</h1>
+            <h2>aka: How to sort the combinations to get all the possible patterns</h2>
+            
+            <h2>List of steps needed to get the algorithm</h2>
+            <ol>
+                <li>Creating the bounds for our program</li>
+                <li>Determining if 1 point can go to another point</li>
+                <li>Creating a function that returns all possible points from a given instruction</li>
+                <li>Create a recursive function to cycle through the combinations</li>
+            </ol>
+            <h2>1) Creating the bounds for our program</h2>
+            <img src="./img/Label_Points.png" width="250">
+            <p>
+                First thing we're going to take each point and give it a value as the combination of the x value and the y value. 
+            </p>
+            <h2>2) Determining if 1 point can go to another point</h2>
+            <p>
+                This might be the most important step of the entire algorithm. I had to define the extra function, <i>pointInArray()</i>,
+                that just tells if a list of points has a specific point in it. Then the function <i>canGo()</i> just takes a point where 
+                you want to go, and given the instructions you have gone so far, what points can you go from there. 
+            </p>
+            <h3>The only 2 things <i>canGo()</i> is really checking for:</h3>
+            <ol>
+                <li>If the point is already taken</li>
+                <li>If the midpoint is a whole coordinate that's still not taken</li>
+            </ol>
+            <p>If any of these things are true, <i>canGo()</i> is going to return false</p>
+            <pre><code class="language-js">
+                function canGo(toPoint, instructions) {
+                    let fromPoint = instructions[instructions.length-1];
+                    //Make sure we haven't 
+                    if (pointInArray(toPoint, instructions))
+                    {return false;}
+                    //Get midpoint
+                    let tmpX = (fromPoint[0] + toPoint[0]) / 2;
+                    let tmpY = (fromPoint[1] + toPoint[1]) / 2;
+                    
+                    //Make sure the midpoint values are whole numbers
+                    if (tmpX === Math.floor(tmpX) && tmpY === Math.floor(tmpY)){
+                        //If the midpoint is not taken
+                        if (!pointInArray([tmpX, tmpY], instructions))
+                        {return false;}
+                    }
+                    return true;
+                }
+            </code></pre>
+            
+            <h2>3) Creating a function that returns all possible points from a given instruction</h2>
+            <p>
+                This is just a function that uses the canGo() function we defined above to loop through 
+                all the points and return a list of available points we are legally able to go to.
+            </p>
+
+            <pre><code class="language-js">
+                function getPoints(instructions) {
+                    let tmpArray = [];
+                    for (let x = 0; x < 3; x++){
+                        for (let y = 0; y < 3; y++){
+                            if (canGo([x, y], instructions)){
+                                tmpArray.push([x, y]);
+                            }
+                        }
+                    }
+                    return tmpArray;
+                }
+            </code></pre>
+            
+            <h2>4) Create a recursive function to cycle through the combinations</h2>
+            <p>
+                The reason we're using recursion instead of an iterative process is because the maximum depth can only get to at most 9 calls.
+                With this function we will use the <i>bruteforce()</i> function to get us started but most the meat is done in the <i>bruteforce_helper()</i>
+                function. Here we're going to be defining a global variable <i>totalCombinations</i>, which is a list that will hold all the instructions 
+                that used 4 or more values.
+            </p>
+            <pre><code class="language-js">
+                let totalCombinations = [];
+                function bruteforce_helper(instructions){
+                    let cyclePoints = getPoints(instructions);
+                    if (instructions.length > 3) {
+                        totalCombinations.push(instructions.slice());
+                    }
+                    for (let i = 0; i < cyclePoints.length; i++) {
+                        instructions.push(cyclePoints[i]);
+                        bruteforce_helper(instructions);
+                        instructions.pop();
+                    }
+                    //Base case, returns if length is 9 or done cycling through cyclePoints
+                    return
+                }
+                function bruteforce() {
+                    for (let x = 0; x < 3; x++){
+                        for (let y = 0; y < 3; y++){
+                            bruteforce_helper([[x, y]])
+                        }
+                    }
+                }
+            </code></pre>
+            
+        </section>
+        
+        <section id="display">
+            <h1>Running and Displaying the Patterns</h1>
+            <div id="patternBoard">
+                
+                <img src="./img/Label_Points.png" width="350">
+                <h2>A complete list of all the instructions. Click one to see the ordered list of pattern combinations</h2>
+                
+                <div id="buttonList">
+                    <!--Filled by javascript-->
+                </div>
+                <h2>More buttons will appear below this. Yes, the buttons above this created more buttons below it</h2>
+                <div id="patternList">
+                    <!--Filled by javascript-->
+                </div>
+                <div id="displayPatterns" style="position:relative">
+                    <!--Filled by javascript-->
+                    <div id="displayBackground"></div>
+                </div>
+                
+            </div>
+        </section>
+        <section id="logVisit">
+            <h1>Visitor Form</h1>
+            <form id="myform" novalidate>
+                <ul class="visitorForm" id="vForm">
+                    <li>
+                        <label for="first-name">First name</label>
+                        <input type="text" id="first-name" name="first-name" pattern="[a-zA-Z]+" placeholder="First Name" required>
+                        <div class="errorMsg">Please Input Your First Name</div>
+                    </li>
+                    
+                    <li>
+                        <label for="last-name">Last name</label>
+                        <input type="text" id="last-name" name="last-name" placeholder="Last Name" required>
+                        <div class="errorMsg">Please Input Your Last Name</div>
+                    </li>
+                    
+                    <li>
+                        <label for="address">Address</label>
+                        <input type="text" id="address" name="address" placeholder="Address" required>
+                        <div class="errorMsg">You must enter a valid address</div>
+                    </li>
+                    
+                    <li>
+                        <label for="city">City</label>
+                        <input type="text" id="city" name="city" placeholder="City" required>
+                        <div class="errorMsg">You must enter a valid city</div>
+                    </li>
+                    
+                    <li>
+                        <label for="state">State</label>
+                        <input type="text" minlength="2" maxlength="2" id="state" name="state" placeholder="State">
+                        <div class="errorMsg">You must enter a valid state with two letters. example: UT</div>
+                    </li>
+                    
+                    <li>
+                        <label for="zip-code">Zip Code</label>
+                        <input type="text" minlength="5" maxlength="5" id="zip-code" name="zip-code" placeholder="Zip Code" required>
+                        <div class="errorMsg">You must enter a valid zip code</div>
+                    </li>
+                    
+                    <li>
+                        <label for="cell-phone">Cell Phone Number</label>
+                        <input type="text" minlength="10" maxlength="10" id="cell-phone" name="cell-phone" placeholder="(XXX) XXX-XXXX" required>
+                        <div class="errorMsg">You must enter a valid phone number</div>
+                    </li>
+
+                    <li>
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" placeholder="example@example.com" required>
+                        <div class="errorMsg">You must enter a valid email address</div>
+                    </li>
+                    <!--
+                        <li>
+                            <h2>How did you find my page?</h2>
+                        </li>
+                        <li>
+                            <input type="checkbox" name="find-page" value="duckduckgo" id="duckduckgo">
+                            <label for="duckduckgo">DuckDuckGo Search</label>
+                        </li>
+                        <li>
+                            <input type="checkbox" name="find-page" id="friend">
+                            <label for="friend">A Friend</label>
+                        </li>
+                        <li>
+                            <input type="checkbox" name="find-page" value="newspaper" id="newspaper">
+                            <label for="newspaper">The News Paper</label>
+                            <div class="errorMsg" id="lastError">You must select at least one</div>
+                    </li>
+                -->
+                <input id="submitBtn" type='submit'>
+                <button id="cancelBtn" onClick="cancelForm()" type="button">Cancel</button>
+                </ul>
+            </form>
+        </section>
+        <section id="thankYouPage">
+            <h1>Thank You!</h1>
+        </section>
+        <section id="visitors">
+            <h1>Visitors</h1>
+            <table>
+                <!--Filled by Javascript-->
+            </table>
+            <div id="addVisitor">
+                <button onclick="addVisitor()">
+                    <h2>New Visitor</h2>
+                    <img src="./img/plus-solid.svg">
+                </button>
+            </div>
+        </section>
+        
+        <footer>
+            <h1>Cracking the Pattern Lock</h1>
+            <p>A webite dedicated to showing and displaying the combinations of the 3x3 pattern lock</p>
+            <div>
+                <button onclick="lastPage()"><img src="./img/leftArrow.svg"></button>
+                <button onclick="nextPage()"><img src="./img/rightArrow.svg"></button>
+            </div>
+        </footer>
+    </body>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> <!--Add Jquery-->
+    <script src="./js/model.js"></script>
+    <script src="./js/controller.js"></script>
+    <script src="./js/view.js"></script>
+    <script src="./js/prism.js"></script>
+    <script src="./js/validation.js"></script>
+    <script>
+      $(document).ready(function () {
+          initValidation("#myform");
+        });
+        </script>
+</html>
