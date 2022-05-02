@@ -1,6 +1,6 @@
 /*this file contains view related javascript functions related to what the user is seeing and interacting with*/
 
-function renderTable(containerId, visitors) {//renders table from global 'visitors' object array
+function renderTable(visitors) {//renders table from global 'visitors' object array
     $('#visitors tr').remove();
 
     $('#visitors table').append(

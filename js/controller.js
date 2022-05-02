@@ -251,7 +251,7 @@ $(document).ready(function() {
 function loadVisitors() {
     //called when 'visitors' menu item is clicked 
     //calls view 'renderTable'
-    renderTable('??', visitors);
+    renderTable(visitors);
     navigateTo('#visitors');
     //calls view 'showTable'
 }
@@ -289,6 +289,7 @@ function submitForm() {
     let st = $($('#vForm li')[4]).children('input').val();
     let zip = $($('#vForm li')[5]).children('input').val();
     let cellNum = $($('#vForm li')[6]).children('input').val();
+    cellNum = cellNum.slice(0,3) + '-' + cellNum.slice(3, 6) + '-' + cellNum.slice(6, 10);
     let emai = $($('#vForm li')[7]).children('input').val();
     let tmpVis = new Visitor(id, fName, lName, addr, cit, st, zip, cellNum, emai);
     
@@ -301,7 +302,7 @@ function submitForm() {
     }
         
     //calls view 'renderTable' 
-    renderTable('??', visitors);
+    renderTable(visitors);
     //calls view 'showTable'
     editMode = false;
     }

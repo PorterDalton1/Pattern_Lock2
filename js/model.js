@@ -55,11 +55,9 @@ function findVisitor(id) {
     }
 }
 function findVisitorIndex(id) {
-    function findVisitor(id) {
-        for (let i=0; i<visitors.length; i++) {
-            if (visitors[i].id == id) {
-                return i;
-            }
+    for (let i=0; i<visitors.length; i++) {
+        if (visitors[i].id == id) {
+            return i;
         }
     }
 }
